@@ -18,14 +18,9 @@ const signUpSchema = z.object({
   password: z.string().min(8),
 });
 
-const defaultValues = {
-  email: "admin@example.com",
-  password: "admin123",
-};
 type FormValues = z.infer<typeof signUpSchema>;
 export function UserLoginForm({ className, ...props }: Props) {
   const form = useForm<FormValues>({
-    defaultValues,
     resolver: zodResolver(signUpSchema),
   });
 
