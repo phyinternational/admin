@@ -1,7 +1,11 @@
 {
-  "name": "invoicetor-frontend",
+  "name": "raajsi-admin",
   "private": true,
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phyinternational/admin.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite --host",
