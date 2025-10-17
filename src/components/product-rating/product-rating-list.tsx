@@ -24,7 +24,6 @@ const ProductRatingList = () => {
     return [];
   }, [data, isSuccess]);
 
-  console.log(productRatings);
   return (
     <section className="">
       <h2 className="mb-2 text-3xl tracking-wide">ProductRatings List</h2>

@@ -25,8 +25,6 @@ const UpdateProductImage = () => {
 
   if (isLoading || colorLoading || imageLoading) return <LoadingScreen />;
 
-  console.log(imagedata);
-
   const imageUrls = imagedata?.data?.data?.productImage?.imageUrls ?? [];
   const onSubmit = (data: any) => {
     // If the form provided FormData (files), forward it directly to the mutation

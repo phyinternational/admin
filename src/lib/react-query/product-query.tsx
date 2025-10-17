@@ -88,7 +88,6 @@ export const useAddProduct = () => {
         return response;
       } catch (error: any) {
         // Enhanced error logging
-        console.log('%c❌ API Error Details', 'background: #dc2626; color: white; padding: 2px 4px; border-radius: 4px;');
         console.group('Error Information');
         console.log('Message:', error.message);
         console.log('Response data:', error.response?.data);
@@ -243,7 +242,6 @@ export const useAddProductVariant = () => {
       });
     },
     onError: (error: any) => {
-      console.log("error");
       toast.success(
         error.response?.data.message ??
           error.response?.data.error.message ??

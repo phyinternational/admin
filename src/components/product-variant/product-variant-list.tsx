@@ -83,7 +83,6 @@ const ProductVariantList = () => {
     return [allColorOption, ...coloroptions];
   }, [data]);
 
-  console.log(colorOptions);
   return (
     <section className="">
       <h2 className="mb-2 text-3xl tracking-wide">ProductVariant List</h2>

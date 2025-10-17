@@ -13,17 +13,12 @@ const EditCategoryForm = () => {
 
   const { mutate, isPending } = useUpdateCategory();
   const onSubmit = (data: any) => {
-    console.log("EditCategoryForm onSubmit called with data:", data);
     
     // Check if there are uploaded files that need FormData
     const selectedFiles = (((data as any).images) || []) as File[];
     const categoryId = id; // Extract id before FormData creation
     
-    console.log("Selected files:", selectedFiles);
-    console.log("Category ID:", categoryId);
-    
     if (selectedFiles && selectedFiles.length > 0) {
-      console.log("Creating FormData for file upload");
       // Create FormData for file uploads
       const formData = new FormData();
       formData.append("name", String(data.name));
@@ -37,10 +32,8 @@ const EditCategoryForm = () => {
       
       selectedFiles.forEach((file) => {
         formData.append("image", file);
-        console.log("Appending file:", file.name, file.size, file.type);
       });
       
-      console.log("FormData created, calling mutate with FormData");
       mutate({ formData, _id: categoryId }, {
         onSuccess: () => {
           // small delay so the success toast is visible before redirect
@@ -48,7 +41,6 @@ const EditCategoryForm = () => {
         },
       });
     } else {
-      console.log("No files detected, sending as JSON");
       mutate({ ...data, _id: categoryId }, {
         onSuccess: () => {
           // small delay so the success toast is visible before redirect

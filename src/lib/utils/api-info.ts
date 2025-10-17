@@ -16,8 +16,6 @@ export const showApiInfo = async () => {
     isProd: import.meta.env.PROD,
     apiUrl: import.meta.env.VITE_API_URL,
   };
-
-  console.log("Current API Configuration:", apiConfig);
   
   // Create a readable message for the user
   const infoMsg = `API Configuration:

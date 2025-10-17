@@ -159,7 +159,6 @@ const ProductForm = () => {
   const onSubmit = async (data: ProductFormData) => {
     // Reset any existing toasts
     toast.dismiss();
-    console.log("Form data submitted:", data);
     
     try {
       // Validate required fields
@@ -197,9 +196,7 @@ const ProductForm = () => {
         
         // (Removed jewelry-specific fields - not applicable)
       };
-      
-      console.log("Transformed product data:", productData);
-      
+            
       // If files were selected via the FormImage input, they are stored in form state
       // under the key 'images'. When files exist we must send multipart/form-data
       // where 'product' is a stringified JSON and files are appended under 'images'.
@@ -242,7 +239,6 @@ const ProductForm = () => {
           // onSettled will rely on mutation's handlers to dismiss toasts
         },
         onSuccess: (response) => {
-          console.log("Product added successfully:", response);
           toast.success("Product added successfully!");
           navigate('/dashboard/products/list');
         },

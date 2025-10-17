@@ -37,7 +37,6 @@ const BannersList = () => {
           banner.title.toLowerCase().includes(filter.search.toLowerCase())
         );
       }
-      console.log(banners);
       return banners;
     }
     return [];

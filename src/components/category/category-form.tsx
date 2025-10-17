@@ -109,9 +109,6 @@ const CategoryForm = ({ isPending, onSubmit, defaultValues, showUrlInput = true 
 
   if (isLoading) return <LoadingScreen />;
   
-  console.log("CategoryForm render - form errors:", form.formState.errors);
-  console.log("CategoryForm render - form values:", form.watch());
-  
   return (
     <main className="max-w-lg bg-white p-4 rounded-md  mt-20">
       <FormProvider
@@ -147,7 +144,6 @@ const CategoryForm = ({ isPending, onSubmit, defaultValues, showUrlInput = true 
             className="w-full"
             options={categoryOptions}
             onValueChange={(e) => {
-              console.log("Parent category changed to:", e);
               form.setValue("parentId", e, { shouldValidate: true });
             }}
             value={form.watch("parentId") || ""}
@@ -202,9 +198,6 @@ const CategoryForm = ({ isPending, onSubmit, defaultValues, showUrlInput = true 
           type="submit"
           disabled={isPending}
           onClick={() => {
-            console.log("Submit button clicked");
-            console.log("Form is valid:", form.formState.isValid);
-            console.log("Form errors:", form.formState.errors);
           }}
         >
           {isPending && <Loader2 className="animate-spin mr-2" size={18} />}

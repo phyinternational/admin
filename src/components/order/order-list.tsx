@@ -42,9 +42,6 @@ const OrdersList = () => {
     setFilter({ search, pageIndex: 0, pageSize: 10, date: "" });
   }, [search]);
 
-  
-  console.log(data?.data)
-
   return (
     <section className="">
       <h2 className="mb-2 text-3xl tracking-wide">Orders List</h2>

@@ -24,7 +24,6 @@ const UpdateBlogForm = () => {
     };
   }, [blogData]);
 
-  console.log(defaultValues);
 
   if (isLoading && !defaultValues) <LoadingScreen />;
 

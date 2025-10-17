@@ -55,7 +55,6 @@ const AddProductVariant = () => {
     );
 
   const onSubmit = (data: any) => {
-    console.log(data);
     const payload = {
       ...data,
       _id: productVariantId,

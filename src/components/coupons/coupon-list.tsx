@@ -39,7 +39,6 @@ const CouponsList = () => {
         (coupon?.couponCode ?? "").toLowerCase().includes(search.toLowerCase())
       ) as Coupon[]) || [];
     } catch (e) {
-      console.error('Failed to parse coupons response', e, raw);
       return [];
     }
   }, [data, filter, search]);

@@ -67,8 +67,6 @@ function FormImageUploader<TFieldValues extends FieldValues = FieldValues>({
     name,
   });
 
-  console.log("fields", fields);
-
   // We no longer upload directly to Cloudinary here.
   // The selected File objects are stored in the form under 'images'.
   // The submit handler should create FormData and send files to the backend.

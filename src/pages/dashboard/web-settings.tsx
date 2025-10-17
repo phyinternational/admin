@@ -64,8 +64,6 @@ const WebSettingsForm = () => {
 
   if (isLoading) return <Skeleton className="w-72 h-72" />;
 
-  console.log(data);
-
   return (
     <main className="max-w-lg bg-white p-4 rounded-md  ">
       <FormProvider

@@ -24,8 +24,6 @@ const UpdateBannerForm = () => {
     };
   }, [bannerData]);
 
-  console.log(defaultValues);
-
   if (isLoading && !defaultValues) return <LoadingScreen />;
 
   if (!defaultValues) return null;

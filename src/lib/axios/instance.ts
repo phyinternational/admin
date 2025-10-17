@@ -6,8 +6,6 @@ import { getAuthToken } from '@/lib/utils/auth';
 const isDev = import.meta.env.DEV;
 const baseURL = isDev ? '/api' : (import.meta.env.VITE_API_URL ?? "http://localhost:5000");
 
-console.log("API base URL:", baseURL);
-console.log("Running in development mode:", isDev);
 
 const instance = axios.create({
   baseURL,
@@ -50,8 +48,6 @@ instance.interceptors.request.use(function (config) {
   timingMap.set(config, Date.now());
   
   console.group(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`);
-  console.log("Headers:", config.headers);
-  console.log("Data:", config.data);
   if (config.params) console.log("Params:", config.params);
   console.groupEnd();
   
@@ -98,7 +94,6 @@ instance.interceptors.response.use(function (response) {
     console.log("Error:", error.message);
   }
   
-  console.log("Config:", error.config);
   console.groupEnd();
   
   return Promise.reject(error);

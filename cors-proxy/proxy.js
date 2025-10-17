@@ -29,7 +29,6 @@ app.use(cors({
 
 // Log requests
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} [${req.method}] ${req.url}`);
   next();
 });
 
@@ -45,7 +44,6 @@ app.use('/', createProxyMiddleware({
     proxyReq.setHeader('X-Forwarded-For', req.ip);
   },
   onError: (err, req, res) => {
-    console.error('Proxy error:', err);
     res.writeHead(500, {
       'Content-Type': 'text/plain'
     });
@@ -55,7 +53,4 @@ app.use('/', createProxyMiddleware({
 
 // Start server
 app.listen(PORT, HOST, () => {
-  console.log(`CORS Proxy running on ${HOST}:${PORT}`);
-  console.log(`Proxying requests to: ${TARGET}`);
-  console.log(`Example usage: http://localhost:${PORT}/api/product/category/all`);
 });
