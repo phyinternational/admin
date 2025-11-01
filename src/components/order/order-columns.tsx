@@ -22,8 +22,30 @@ export const OrderColumns: ColumnDef<Order>[] = [
     accessorKey: "orderId",
     header: "Order id",
     cell: ({ row }) => (
-      <span className="text-sm font-semibold">{row.original._id}</span>
+      <span className="text-sm font-semibold">{
+        (() => {
+          const id = row.original._id || "";
+          return id.length > 4 ? `${id.slice(0, 4)}...` : id;
+        })()
+      }</span>
     ),
+  },
+  {
+    accessorKey: "userName",
+    header: "User",
+    cell: ({ row }) => {
+      const sa = row.original.shippingAddress || {};
+      const name = [sa.firstName, sa.lastName].filter(Boolean).join(" ") || row.original.buyer || "N/A";
+      return <span className="text-sm">{name}</span>;
+    },
+  },
+  {
+    accessorKey: "phone",
+    header: "Phone",
+    cell: ({ row }) => {
+      const phone = row.original.shippingAddress?.phoneNumber || "N/A";
+      return <span className="text-sm">{phone}</span>;
+    },
   },
   {
     accessorKey: "orderDate",

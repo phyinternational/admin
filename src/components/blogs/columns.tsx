@@ -13,9 +13,24 @@ export const BlogColumns: ColumnDef<Blog>[] = [
     header: "Display Image",
     accessorKey: "displayImage",
     cell: ({ row }) => {
-      const imageUrl = row.original.displayImage[0]?.url;
+      const imageUrl = row.original.displayImage?.[0]?.url;
+      // Force a rectangular thumbnail with rounded corners and a border.
+      // Use object-cover to crop/scale images of any original dimensions.
+      if (!imageUrl) {
+        return (
+          <div className="w-28 h-20 rounded-lg border bg-gray-100 flex items-center justify-center text-sm text-gray-500">
+            No Image
+          </div>
+        );
+      }
+
       return (
-        <img src={imageUrl} alt="Blog Display" style={{ maxWidth: "100px" }} />
+        <img
+          src={imageUrl}
+          alt="Blog Display"
+          className="w-28 h-20 rounded-lg border object-cover"
+          loading="lazy"
+        />
       );
     },
   },
