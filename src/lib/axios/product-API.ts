@@ -122,8 +122,8 @@ export const productAPI = {
     return instance.put(`/product/category/${categoryId}`, formData);
   },
   getWalletBalance: () => instance.get('/user/wallet'),
-  getLowStockProducts: async (threshold = 5) => {
-    return instance.get('/product/low-stock', { params: { threshold } });
+  getLowStockProducts: async () => {
+    return instance.get('/admin/inventory/low-stock');
   },
   updateProductPricing: async (productId: string) => {
     return instance.post(`/product/${productId}/update-pricing`);
