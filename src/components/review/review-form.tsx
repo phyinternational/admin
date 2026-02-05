@@ -64,7 +64,7 @@ const ReviewForm = ({ onSubmit, defaultValues, isPending }: Props) => {
         />
 
         <Button className="w-full mt-4" type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="animate-spin" size="sm" />}
+          {isPending && <Loader2 className="animate-spin" size={16} />}
           {isPending ? "Submitting..." : "Submit"}
         </Button>
       </FormProvider>

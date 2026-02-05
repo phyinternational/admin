@@ -46,11 +46,11 @@ const Navbar: Tab[] = [
     icon: GalleryVertical,
     href: "/banners/list",
   },
-  {
-    label: "Brand List",
-    icon: BoxIcon,
-    href: "/brands/list",
-  },
+  // {
+  //   label: "Brand List",
+  //   icon: BoxIcon,
+  //   href: "/brands/list",
+  // },
   {
     label: "Category",
     icon: Grid,

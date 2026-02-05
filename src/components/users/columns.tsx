@@ -13,8 +13,8 @@ export const UserColumns: ColumnDef<IUser>[] = [
       const profile = row.original;
       let imageUrl: string | undefined;
 
-      if (typeof (profile as any)?.profileImageUrl === "string") {
-        imageUrl = (profile as any).profileImageUrl;
+      if (typeof profile?.profileImageUrl === "string") {
+        imageUrl = profile.profileImageUrl;
       } else if ((profile as any)?.profileImageUrl?.url) {
         imageUrl = (profile as any).profileImageUrl.url;
       } else if (profile?.displayImage?.url) {
@@ -56,13 +56,25 @@ export const UserColumns: ColumnDef<IUser>[] = [
   {
     header: "Name",
     accessorKey: "name",
-    cell: ({ row }) => (
-      <span className="whitespace-nowrap">{row.original?.name || "N/A"}</span>
-    ),
+    cell: ({ row }) => {
+      const user = row.original;
+      const sa = user?.shippingAddress || {};
+      const nameFromSA = [sa.firstName, sa.lastName].filter(Boolean).join(" ");
+      return (
+        <span className="whitespace-nowrap">
+          {user?.name || nameFromSA || "N/A"}
+        </span>
+      );
+    },
   },
   {
     header: "Email",
     accessorKey: "email",
+    cell: ({ row }) => {
+      const user = row.original;
+      const sa = user?.shippingAddress || {};
+      return <span>{user?.email || sa.email || "N/A"}</span>;
+    },
   },
   {
     header: "Phone Number",

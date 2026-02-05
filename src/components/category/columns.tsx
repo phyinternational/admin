@@ -43,14 +43,6 @@ export const CategoryColumns: ColumnDef<Category>[] = [
   },
 
   {
-    accessorKey: "type",
-    header: "Category Type",
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap font-medium text-gray-500">{row.original.type}</div>
-    ),
-  },
-
-  {
     header: "Actions",
     cell: ({ row }) => <ActionColumn row={row} />,
   },

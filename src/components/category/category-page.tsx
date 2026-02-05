@@ -60,10 +60,6 @@ const CategoryPage = () => {
             <p className="text-sm">{currentCategory?.name}</p>
           </div>
           <div>
-            <h4 className="text-sm mb-1 font-semibold">Category Type</h4>
-            <p className="text-sm">{currentCategory?.type}</p>
-          </div>
-          <div>
             <h4 className="text-sm mb-1  font-semibold">Category Image</h4>
             <img
               src={currentCategory?.imageUrl}

@@ -1,12 +1,15 @@
 import ColorForm from "./color-form";
 import { useAddColor } from "@/lib/react-query/color-query";
+import { useNavigate } from "react-router-dom";
 
 const AddColorForm = () => {
+  const navigate = useNavigate();
   const { mutate, isPending } = useAddColor();
   const onSubmit = (data: any,onSuccess?:()=>void) => {
     mutate({ ...data, hexcode: `${data.hexcode}`},{
       onSuccess: () => {
         onSuccess && onSuccess();
+        setTimeout(() => navigate("/dashboard/colors/list"), 600);
       },
     });
   };

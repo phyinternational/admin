@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "../form/FormInput";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Colorful from "@uiw/react-color-colorful";
 
 const colorSchema = z.object({
@@ -89,7 +89,7 @@ const ColorForm = ({ onSubmit, defaultValues, isPending }: Props) => {
         />
 
         <Button className="w-full mt-4" type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="animate-spin" size="sm" />}
+          {isPending && <Loader2 className="animate-spin" size={16} />}
           {isPending ? "Loading..." : "Submit"}
         </Button>
       </FormProvider>

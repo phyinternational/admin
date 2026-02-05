@@ -61,7 +61,7 @@ const ProductVariantImage = ({ onSubmit, defaultValues, isPending }: Props) => {
         <FormImageUploader control={form.control} name={"imageUrls"} />
 
         <Button className="w-full mt-4" type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="animate-spin" size="sm" />}
+          {isPending && <Loader2 className="animate-spin" size={16} />}
           {isPending ? "Adding Category" : "Add Category"}
         </Button>
       </FormProvider>

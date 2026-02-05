@@ -125,7 +125,7 @@ const ProductVariantForm = ({ onSubmit, defaultValues, isPending }: Props) => {
         </div>
 
         <Button className="w-full mt-4" type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="animate-spin" size="sm" />}
+          {isPending && <Loader2 className="animate-spin" size={16} />}
           {isPending ? "Please wait..." : "Submit"}
         </Button>
       </FormProvider>

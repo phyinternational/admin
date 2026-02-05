@@ -253,12 +253,6 @@ const UpdateProductForm = () => {
             placeholder="Enter GST"
             label="GST"
           />
-          <FormGroupSelect
-            control={form.control}
-            name="brand"
-            label="Brand"
-            options={brandOptions}
-          />
           <FormTextArea
             control={form.control}
             name="productDescription"

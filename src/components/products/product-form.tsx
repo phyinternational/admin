@@ -131,6 +131,18 @@ const ProductForm = () => {
   }, [data]);
   const { mutate, isPending } = useAddProduct();
 
+  // Auto-set brand to "Raajsi" by default
+  useEffect(() => {
+    if (brandOptions && brandOptions.length > 0) {
+      const raajsiBrand = brandOptions.find(
+        (opt: any) => opt.label.toLowerCase() === "raajsi"
+      );
+      if (raajsiBrand) {
+        form.setValue("brand", raajsiBrand.value);
+      }
+    }
+  }, [brandOptions, form]);
+
   // Auto-generate productSlug from productTitle (lowercase, spaces -> underscores)
   // Do not overwrite if the slug field was manually edited (dirty)
   useEffect(() => {
@@ -344,12 +356,6 @@ const ProductForm = () => {
           
           {/* Silver Jewelry Dynamic Pricing removed - not applicable for skin care products */}
           
-          <FormGroupSelect
-            control={form.control}
-            name="brand"
-            label="Brand"
-            options={brandOptions}
-          />
           <FormTextArea
             control={form.control}
             name="productDescription"

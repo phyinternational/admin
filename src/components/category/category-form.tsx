@@ -16,18 +16,8 @@ import LoadingScreen from "../common/loading-screen";
 import FormSwitch from "../form/form-switch";
 import { nestedLabel } from "@/lib/utils/category-utils";
 
-const typeOptions = [
-  {
-    label: "Footer Menu",
-    value: "Footer",
-  },
-  {
-    label: "Main Menu",
-    value: "main",
-  },
-];
 const categorySchema = z.object({
-  type: z.enum(["Footer", "main"]),
+  type: z.enum(["Footer", "main"]).optional(),
   name: z.string().min(1, "Category Name is required"),
   isActive: z.boolean(),
   parentId: z.string().optional(),
@@ -125,13 +115,6 @@ const CategoryForm = ({ isPending, onSubmit, defaultValues, showUrlInput = true 
             <pre className="text-xs mt-2">{JSON.stringify(form.formState.errors, null, 2)}</pre>
           </div>
         )}
-        <FormGroupSelect
-          control={form.control}
-          name="type"
-          placeholder="Select Category Type"
-          label="Category Type"
-          options={typeOptions}
-        />
         <FormSwitch
           control={form.control}
           name="isActive"
