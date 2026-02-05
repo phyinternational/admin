@@ -38,3 +38,27 @@ export const useUpdateOrder = () => {
     },
   });
 };
+
+export const useApproveOrderRequest = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["order", "approve-request"],
+    mutationFn: ({ id, data }: { id: string, data: any }) => orderAPI.approveRequest(id, data),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["order", id] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+};
+
+export const useRejectOrderRequest = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["order", "reject-request"],
+    mutationFn: ({ id, data }: { id: string, data: any }) => orderAPI.rejectRequest(id, data),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["order", id] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+};

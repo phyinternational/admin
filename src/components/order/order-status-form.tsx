@@ -2,6 +2,7 @@ import FormProvider from "../form/FormProvider";
 
 import { useForm } from "react-hook-form";
 import FormGroupSelect from "../form/form-select";
+import FormInput from "../form/FormInput";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,24 +16,43 @@ const OrderStatusEnum = z.enum([
   "PLACED",
   "SHIPPED",
   "DELIVERED",
-  "CANCELLED BY ADMIN",
+  "CANCELLED_BY_ADMIN",
+  "CANCELLED_BY_USER",
+  "RETURN_REQUESTED",
+  "RETURN_APPROVED",
+  "RETURN_REJECTED",
+  "RETURNED",
+  "REPLACEMENT_REQUESTED",
+  "REPLACEMENT_APPROVED",
+  "REPLACEMENT_REJECTED",
+  "REPLACEMENT_IN_PROGRESS",
 ]);
 
 const orderSchema = z.object({
   order_status: OrderStatusEnum,
+  reason: z.string().optional(),
 });
 
 export type OrderFormType = z.infer<typeof orderSchema>;
 
 type Props = {
-  defaultValues: OrderFormType;
+  defaultValues: { order_status: any };
 };
 
 const statusOptions = [
   { label: "Placed", value: "PLACED" },
   { label: "Shipped", value: "SHIPPED" },
   { label: "Delivered", value: "DELIVERED" },
-  { label: "Cancelled by Admin", value: "CANCELLED BY ADMIN" },
+  { label: "Cancelled by Admin", value: "CANCELLED_BY_ADMIN" },
+  { label: "Cancelled by User", value: "CANCELLED_BY_USER" },
+  { label: "Return Requested", value: "RETURN_REQUESTED" },
+  { label: "Return Approved", value: "RETURN_APPROVED" },
+  { label: "Return Rejected", value: "RETURN_REJECTED" },
+  { label: "Returned", value: "RETURNED" },
+  { label: "Replacement Requested", value: "REPLACEMENT_REQUESTED" },
+  { label: "Replacement Approved", value: "REPLACEMENT_APPROVED" },
+  { label: "Replacement Rejected", value: "REPLACEMENT_REJECTED" },
+  { label: "Replacement in Progress", value: "REPLACEMENT_IN_PROGRESS" },
 ];
 const OrderStatusForm = ({ defaultValues }: Props) => {
   const { id } = useParams();
@@ -64,6 +84,13 @@ const OrderStatusForm = ({ defaultValues }: Props) => {
           options={statusOptions}
           control={form.control}
           name="order_status"
+          label="Status"
+        />
+        <FormInput
+          control={form.control}
+          name="reason"
+          placeholder="Reason for change (optional)"
+          label="Reason"
         />
         <Button
           type="submit"
