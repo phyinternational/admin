@@ -16,19 +16,19 @@ const AddCouponForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data: any) => {
-    mutate({
-      ...data,
-      couponAmount: parseInt(data.couponAmount),
-      minCartAmount: parseInt(data.minCartAmount),
-    }, {
-      onSuccess: () => {
-        setTimeout(() => navigate("/dashboard/coupons/list"), 600);
+    mutate(
+      {
+        ...data,
+        couponAmount: parseInt(data.couponAmount),
+        minCartAmount: parseInt(data.minCartAmount),
+        couponQuantity: parseInt(data.couponQuantity),
+      },
+      {
+        onSuccess: () => {
+          setTimeout(() => navigate("/dashboard/coupons/list"), 600);
+        },
       }
-    });
-  };
-      discount: parseInt(data.discount),
-      couponQuantity: parseInt(data.couponQuantity),
-    });
+    );
   };
 
   return (
