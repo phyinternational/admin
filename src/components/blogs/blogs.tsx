@@ -5,6 +5,7 @@ export interface Blog {
   title: string;
   content: string;
   displayImage: { url: string }[];
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

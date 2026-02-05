@@ -2,7 +2,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Blog } from "./blogs";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useDeleteBlog, useToggleBlogStatus } from "@/lib/react-query/blog-query";
+import { Switch } from "../ui/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import React from "react";
 
 export const BlogColumns: ColumnDef<Blog>[] = [
   {
@@ -35,6 +43,25 @@ export const BlogColumns: ColumnDef<Blog>[] = [
     },
   },
   {
+    header: "Status",
+    accessorKey: "isActive",
+    cell: ({ row }) => {
+      const toggleMutation = useToggleBlogStatus();
+      return (
+        <div className="flex items-center gap-2">
+          <Switch 
+            checked={row.original.isActive} 
+            onCheckedChange={() => toggleMutation.mutate(row.original._id)}
+            disabled={toggleMutation.isPending}
+          />
+          <span className={row.original.isActive ? "text-green-600" : "text-red-600 text-sm font-medium"}>
+            {row.original.isActive ? "Active" : "Inactive"}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
     header: "Created At",
     accessorKey: "createdAt",
     cell: ({ row }) => {
@@ -52,6 +79,13 @@ export const BlogColumns: ColumnDef<Blog>[] = [
     header: "Actions",
     accessorKey: "actions",
     cell: ({ row }) => {
+      const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+      const deleteMutation = useDeleteBlog();
+      
+      const handleDelete = async () => {
+        setIsDialogOpen(true);
+      };
+
       return (
         <div className="flex items-center gap-2">
           <Link to={`/dashboard/blogs/${row.original._id}`}>
@@ -59,6 +93,35 @@ export const BlogColumns: ColumnDef<Blog>[] = [
               <Pencil size={18} />
             </Button>
           </Link>
+          <Button size={"icon"} variant={"outline"} onClick={handleDelete} className="text-red-600 hover:text-red-700 hover:bg-red-50">
+            <Trash2 size={18} />
+          </Button>
+
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogDescription className="text-center pt-4 text-lg font-semibold">
+                Are you sure you want to delete this blog?
+              </DialogDescription>
+              <div className="mt-4 flex justify-center gap-4">
+                <Button
+                  variant="destructive"
+                  onClick={async () => {
+                    await deleteMutation.mutateAsync(row.original._id);
+                    setIsDialogOpen(false);
+                  }}
+                  disabled={deleteMutation.isPending}
+                >
+                  {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       );
     },

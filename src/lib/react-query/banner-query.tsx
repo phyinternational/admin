@@ -50,6 +50,22 @@ export const useUpdateBanner = () => {
   });
 };
 
+export const useReorderBanners = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: bannerAPI.reorderBanners,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["banners"] });
+      toast.success("Order updated successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data.error.message ?? "Error reordering banners"
+      );
+    },
+  });
+};
+
 export const useDeleteBanner = () => {
   const queryClient = useQueryClient();
   return useMutation({

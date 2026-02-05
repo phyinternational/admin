@@ -25,7 +25,37 @@ export const useAddBlog = () => {
     },
   });
 };
+export const useDeleteBlog = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: blogAPI.deleteBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      toast.success("Successfully Deleted!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data.error.message ?? "Error deleting blog"
+      );
+    },
+  });
+};
 
+export const useToggleBlogStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: blogAPI.toggleBlogStatus,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+      toast.success(data.data.message || "Status updated!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data.error.message ?? "Error updating status"
+      );
+    },
+  });
+};
 export const useGetBlog = (id: string) => {
   return useQuery({
     queryKey: ["blog", id],

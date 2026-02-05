@@ -13,6 +13,9 @@ export const bannerAPI = {
     updateBanner: async (payload: any) => {
         return instance.put(`/admin/banners/${payload._id}`, payload);
     },
+    reorderBanners: async (orders: { id: string, position: number }[]) => {
+        return instance.put(`/admin/banners/reorder/bulk`, { orders });
+    },
     deleteBanner: async (id: string) => {
         return instance.delete(`/admin/banners/${id}`);
     },

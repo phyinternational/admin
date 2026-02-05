@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { useDeleteBanner } from "@/lib/react-query/banner-query";
+import { useDeleteBanner, useUpdateBanner } from "@/lib/react-query/banner-query";
 import { Trash2, Pencil } from "lucide-react";
 import { Banner } from "./banner"; // Import the Banner interface
 import {
@@ -10,8 +10,13 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import React from "react";
+import { Switch } from "../ui/switch";
 
 export const BannerColumns: ColumnDef<Banner>[] = [
+  {
+    header: "Pos",
+    accessorKey: "position",
+  },
   {
     header: "Title",
     accessorKey: "title",
@@ -19,6 +24,39 @@ export const BannerColumns: ColumnDef<Banner>[] = [
   {
     header: "Slug",
     accessorKey: "slug",
+  },
+  {
+    header: "Status",
+    accessorKey: "isActive",
+    cell: ({ row }) => {
+      const banner = row.original;
+      const updateMutation = useUpdateBanner();
+
+      const handleToggle = async (checked: boolean) => {
+        await updateMutation.mutateAsync({
+          ...banner,
+          isActive: checked,
+        });
+      };
+
+      return (
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={banner.isActive}
+            onCheckedChange={handleToggle}
+            disabled={updateMutation.isPending}
+            className="data-[state=checked]:bg-green-600 scale-75"
+          />
+          <span
+            className={`text-[10px] font-bold uppercase tracking-tighter ${
+              banner.isActive ? "text-green-700" : "text-gray-400"
+            }`}
+          >
+            {banner.isActive ? "Active" : "Inactive"}
+          </span>
+        </div>
+      );
+    },
   },
   {
     header: "Banner Images",
