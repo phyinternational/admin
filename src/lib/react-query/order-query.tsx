@@ -17,12 +17,18 @@ export const useGetOrderById = (id: string) => {
       // Unwrap nested successRes shapes from backend
       const d = res?.data;
       if (!d) return null;
-      // backend: successRes(res, { data: order }) -> res.data = { status, data: { data: order } }
-      if (d.data?.data) return d.data.data;
-      if (d.data) return d.data;
-      return d;
+      // backend: successRes(res, { data: order, replacementOrder }) -> res.data = { status, data: { data: order, replacementOrder } }
+      const inner = d.data || d;
+      const order = inner.data || inner;
+      // Attach replacementOrder if present (for orders with approved replacements)
+      if (inner.replacementOrder) {
+        order._replacementOrder = inner.replacementOrder;
+      }
+      return order;
     },
     staleTime: 15 * 60 * 1000,
+    refetchInterval: 10000, // Auto-refresh every 10 seconds
+    refetchIntervalInBackground: false, // Don't refetch when tab is not active
   });
 };
 
@@ -31,10 +37,16 @@ export const useUpdateOrder = () => {
   return useMutation({
     mutationKey: ["order", "update"],
     mutationFn: (data: any) => orderAPI.updateOrder(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      // Invalidate both the specific order and the orders list
       queryClient.invalidateQueries({
         queryKey: ["orders"],
       });
+      if (variables._id) {
+        queryClient.invalidateQueries({
+          queryKey: ["order", variables._id],
+        });
+      }
     },
   });
 };

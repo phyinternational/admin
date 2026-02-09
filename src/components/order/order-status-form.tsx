@@ -37,6 +37,7 @@ export type OrderFormType = z.infer<typeof orderSchema>;
 
 type Props = {
   defaultValues: { order_status: any };
+  disabled?: boolean;
 };
 
 const statusOptions = [
@@ -54,7 +55,7 @@ const statusOptions = [
   { label: "Replacement Rejected", value: "REPLACEMENT_REJECTED" },
   { label: "Replacement in Progress", value: "REPLACEMENT_IN_PROGRESS" },
 ];
-const OrderStatusForm = ({ defaultValues }: Props) => {
+const OrderStatusForm = ({ defaultValues, disabled }: Props) => {
   const { id } = useParams();
   const { mutate, isPending } = useUpdateOrder();
   const form = useForm<OrderFormType>({
@@ -67,8 +68,9 @@ const OrderStatusForm = ({ defaultValues }: Props) => {
       onSuccess: () => {
         toast.success("Order Status Updated");
       },
-      onError: (error) => {
-        toast.error(error.message ?? "Failed to update order status");
+      onError: (error: any) => {
+        const msg = error?.response?.data?.error?.message || error.message || "Failed to update order status";
+        toast.error(msg);
       },
     });
   };
@@ -85,18 +87,20 @@ const OrderStatusForm = ({ defaultValues }: Props) => {
           control={form.control}
           name="order_status"
           label="Status"
+          disabled={disabled}
         />
         <FormInput
           control={form.control}
           name="reason"
           placeholder="Reason for change (optional)"
           label="Reason"
+          disabled={disabled}
         />
         <Button
           type="submit"
           size={"sm"}
           className="w-full flex justify-center"
-          disabled={isPending}
+          disabled={isPending || disabled}
         >
           {isPending && <Loader2 className="animate-spin mr-2" size={18} />}
           {isPending ? "Updating..." : "Update"}

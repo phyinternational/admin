@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Order } from "./orders"; // Assuming there's an Order model similar to Product
+import { ItemEntry, Order } from "./orders";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Eye, Copy, Check } from "lucide-react";
@@ -40,12 +40,11 @@ const CopyIdCell = ({ id }: { id: string }) => {
   );
 };
 
-export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reject') => void): ColumnDef<Order>[] => [
+export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reject') => void): ColumnDef<ItemEntry>[] => [
   {
     accessorKey: "serialNumber",
     header: "Sr. No.",
     cell: ({ row, table }) => {
-      // Compute serial number across pages: pageIndex * pageSize + row.index + 1
       const pagination = table.getState().pagination || { pageIndex: 0, pageSize: 10 };
       const pageIndex = pagination.pageIndex ?? 0;
       const pageSize = pagination.pageSize ?? 10;
@@ -55,18 +54,41 @@ export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reje
   },
   {
     accessorKey: "orderId",
-    header: "Order id",
+    header: "Order ID",
     cell: ({ row }) => {
-      const id = row.original._id || "";
+      const id = row.original.order._id || "";
       return <CopyIdCell id={id} />;
+    },
+  },
+  {
+    accessorKey: "product",
+    header: "Product",
+    cell: ({ row }) => {
+      const item = row.original.item;
+      const product = item.product;
+      const title = product?.productTitle || product?.displayName || "Product";
+      const image = product?.productImageUrl?.[0] || product?.displayImage || null;
+
+      return (
+        <div className="flex items-center gap-2 max-w-[200px]">
+          {image && (
+            <img
+              src={image}
+              alt={title}
+              className="w-8 h-8 rounded object-cover flex-shrink-0"
+            />
+          )}
+          <span className="text-sm truncate" title={title}>{title}</span>
+        </div>
+      );
     },
   },
   {
     accessorKey: "userName",
     header: "User",
     cell: ({ row }) => {
-      const sa = row.original.shippingAddress || {};
-      const name = [sa.firstName, sa.lastName].filter(Boolean).join(" ") || row.original.buyer || "N/A";
+      const sa = row.original.order.shippingAddress || {};
+      const name = [sa.firstName, sa.lastName].filter(Boolean).join(" ") || row.original.order.buyer?.displayName || "N/A";
       return <span className="text-sm">{name}</span>;
     },
   },
@@ -74,7 +96,7 @@ export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reje
     accessorKey: "phone",
     header: "Phone",
     cell: ({ row }) => {
-      const phone = row.original.shippingAddress?.phoneNumber || "N/A";
+      const phone = row.original.order.shippingAddress?.phoneNumber || "N/A";
       return <span className="text-sm">{phone}</span>;
     },
   },
@@ -82,7 +104,7 @@ export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reje
     accessorKey: "orderDate",
     header: "Order Date",
     cell: ({ row }) => {
-      const date = new Date(row.original.createdAt);
+      const date = new Date(row.original.order.createdAt);
       return (
         <span className="text-sm font-semibold">{`${date.getDate()}/${
           date.getMonth() + 1
@@ -91,23 +113,26 @@ export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reje
     },
   },
   {
-    accessorKey: "price",
-    header: "Price",
+    accessorKey: "qty",
+    header: "Qty",
     cell: ({ row }) => {
-      const products = row.original.products;
-      let totalPrice = 0;
-
-      products.forEach((product) => {
-        totalPrice += product.price;
-      });
-      return <span className="text-sm font-semibold">₹ {totalPrice}</span>;
+      return <span className="text-sm font-semibold">{row.original.item.quantity}</span>;
     },
   },
   {
-    accessorKey: "orderStatus",
-    header: "Order Status",
+    accessorKey: "price",
+    header: "Price",
     cell: ({ row }) => {
-      const status = (row.original.order_status || "").toString();
+      const price = row.original.item.price * row.original.item.quantity;
+      return <span className="text-sm font-semibold">₹ {price}</span>;
+    },
+  },
+  {
+    accessorKey: "itemStatus",
+    header: "Item Status",
+    cell: ({ row }) => {
+      const status = row.original.itemStatus || "";
+      const isReplacement = !!row.original.order.parent_order;
       const map: Record<string, string> = {
         PLACED: "yellow",
         SHIPPED: "orange",
@@ -116,46 +141,65 @@ export const getOrderColumns = (onReview: (order: Order, type: 'approve' | 'reje
         CANCELLED_BY_USER: "red",
         CANCELLED: "red",
         RETURN_REQUESTED: "blue",
+        RETURN_APPROVED: "green",
+        RETURN_REJECTED: "red",
+        RETURNED: "green",
         REPLACEMENT_REQUESTED: "purple",
+        REPLACEMENT_APPROVED: "green",
+        REPLACEMENT_REJECTED: "red",
+        REPLACEMENT_IN_PROGRESS: "orange",
       };
       const variant = (map[status] || "default") as any;
-      const label = (status.replace(/_/g, " ") || "N/A");
-      return <Badge variant={variant}>{label}</Badge>;
+      const label = status.replace(/_/g, " ") || "N/A";
+      return (
+        <div className="flex flex-col gap-1">
+          {isReplacement && (
+            <Badge variant="purple" className="w-fit text-[10px] px-1.5 py-0.5">
+              Replacement
+            </Badge>
+          )}
+          <Badge variant={variant} className="w-fit">{label}</Badge>
+        </div>
+      );
     },
   },
   {
     id: "actions",
     header: "Action",
     cell: ({ row }) => {
-      const order = row.original;
-      const isReturn = order.order_status === "RETURN_REQUESTED";
-      const isReplacement = order.order_status === "REPLACEMENT_REQUESTED";
-      const needsReview = isReturn || isReplacement;
+      const order = row.original.order;
+      const itemStatus = row.original.itemStatus;
+      const needsReview = itemStatus === "RETURN_REQUESTED" || itemStatus === "REPLACEMENT_REQUESTED";
 
       return (
         <div className="flex gap-2 items-center">
           <Link to={`/dashboard/orders/${order._id}`}>
-            <Button variant="outline" size={"icon"} title="View Details">
-              <Eye size={20} />
+            <Button
+              variant="outline"
+              size={"icon"}
+              title="View Details"
+              className="hover:bg-blue-50 hover:border-blue-500 hover:text-blue-600 transition-all shadow-sm"
+            >
+              <Eye size={18} />
             </Button>
           </Link>
           {needsReview && (
-            <div className="flex gap-1">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-8 px-2 text-green-600 border-green-600 hover:bg-green-50 text-xs"
+            <div className="flex gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-green-600 border-green-500 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-600 hover:text-white text-xs font-semibold shadow-sm transition-all"
                 onClick={() => onReview(order, 'approve')}
               >
-                Approve
+                ✓ Approve
               </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-8 px-2 text-red-600 border-red-600 hover:bg-red-50 text-xs"
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-red-600 border-red-500 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 hover:text-white text-xs font-semibold shadow-sm transition-all"
                 onClick={() => onReview(order, 'reject')}
               >
-                Reject
+                ✗ Reject
               </Button>
             </div>
           )}
