@@ -49,8 +49,18 @@ const NotificationMenu = () => {
           align="end"
           className="mr-5 w-[350px] rounded-md border bg-white shadow-lg"
         >
-          <DropdownMenuLabel className="mb-2  px-4 py-2 ">
-            <h4>Notification</h4>
+          <DropdownMenuLabel className="mb-2 px-4 py-2">
+            <div className="flex items-center justify-between">
+              <h4 className="font-semibold text-gray-900">Notification</h4>
+              <Link to="/dashboard/notifications">
+                <Button
+                  variant="link"
+                  className="text-xs text-blue-600 hover:text-blue-700 p-0 h-auto font-medium"
+                >
+                  View All
+                </Button>
+              </Link>
+            </div>
           </DropdownMenuLabel>
           <Separator />
           {Boolean(notifications?.length == 0) && (
@@ -64,12 +74,6 @@ const NotificationMenu = () => {
           {notifications?.map((noti) => (
             <NotificationCard key={noti._id} notification={noti} />
           ))}
-
-          <div className="w-full flex justify-end">
-            <Link to="/dashboard/notifications">
-              <Button variant="link">See All Notifications</Button>
-            </Link>
-          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

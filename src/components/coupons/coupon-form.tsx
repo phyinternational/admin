@@ -32,6 +32,12 @@ const CouponSchema = z.object({
     .refine((val) => !isNaN(Number(val)), {
       message: "Minimum cart amount must be a number",
     }),
+  maxDiscountAmount: z
+    .string()
+    .optional()
+    .refine((val) => !val || !isNaN(Number(val)), {
+      message: "Maximum discount amount must be a number",
+    }),
   expiryDate: z.date(),
 });
 
@@ -48,7 +54,7 @@ const CouponForm = ({ onSubmit, defaultValues, isPending }: Props) => {
     resolver: zodResolver(CouponSchema),
     defaultValues: defaultValues,
   });
-  const { couponCode } = form.watch();
+  const { couponCode, couponType } = form.watch();
   useEffect(() => {
     if (couponCode) {
       form.setValue("couponCode", couponCode.toUpperCase().replace(/ /g, ""));
@@ -73,6 +79,16 @@ const CouponForm = ({ onSubmit, defaultValues, isPending }: Props) => {
           required
         />
 
+        <FormGroupSelect
+          control={form.control}
+          label="Coupon Type"
+          name="couponType"
+          options={[
+            { label: "INR", value: "INR" },
+            { label: "Percentage", value: "PERCENTAGE" },
+          ]}
+        />
+
         <FormInput
           label="Coupon Amount"
           name="couponAmount"
@@ -83,15 +99,6 @@ const CouponForm = ({ onSubmit, defaultValues, isPending }: Props) => {
           required
         />
 
-        <FormGroupSelect
-          control={form.control}
-          label="Coupon Type"
-          name="couponType"
-          options={[
-            { label: "INR", value: "INR" },
-            { label: "Percentage", value: "PERCENTAGE" },
-          ]}
-        />
         <FormInput
           label="Coupon Quantity"
           name="couponQuantity"
@@ -100,6 +107,18 @@ const CouponForm = ({ onSubmit, defaultValues, isPending }: Props) => {
           placeholder="Enter Coupon Quantity"
           required
         />
+
+        {couponType === "PERCENTAGE" && (
+          <FormInput
+            label="Maximum Discount Amount (Optional)"
+            name="maxDiscountAmount"
+            control={form.control}
+            type="number"
+            placeholder="Enter Maximum Discount (e.g., 100)"
+            description="Cap the maximum discount. For example, 10% off but maximum ₹100 discount."
+          />
+        )}
+
         <FormInput
           label="Minimum Cart Amount"
           name="minCartAmount"

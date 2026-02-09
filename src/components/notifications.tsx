@@ -46,8 +46,8 @@ const NoticationPage = () => {
 
   return (
     <section>
-      <h2 className="mb-6 px-4">Notifications</h2>
-      <Tabs defaultValue="unread" className="w-full bg-white py-5">
+      <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Notifications</h2>
+      <Tabs defaultValue="unread" className="w-full bg-white py-5 mt-2">
         <TabsList className="grid md:w-[500px] mx-4 w-fit grid-cols-2 ">
           <TabsTrigger value="unread">Unread Notications</TabsTrigger>
           <TabsTrigger value="read">Read Notications</TabsTrigger>
