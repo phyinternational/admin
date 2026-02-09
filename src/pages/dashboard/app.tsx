@@ -7,6 +7,8 @@ import SummaryCards from "@/components/dashboard/SummaryCards";
 import OrderStatusChart from "@/components/dashboard/OrderStatusChart";
 import TopProductsTable from "@/components/dashboard/TopProductsTable";
 import SalesTrendChart from "@/components/dashboard/SalesTrendChart";
+import RevenueByCategoryChart from "@/components/dashboard/RevenueByCategoryChart";
+import RevenueByPaymentMethod from "@/components/dashboard/RevenueByPaymentMethod";
 import { subDays, format } from "date-fns";
 import { Loader2 } from "lucide-react";
 
@@ -55,8 +57,11 @@ const DashboardHome = () => {
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <OrderStatusChart data={analytics.orders.statusBreakdown} />
+            <RevenueByPaymentMethod data={analytics.financials.revenueByPaymentMethod} />
             <TopProductsTable products={analytics.topProducts} />
           </div>
+
+          <RevenueByCategoryChart data={analytics.financials.revenueByCategory} />
         </>
       ) : (
         <div className="text-center py-10">Failed to load analytics data</div>

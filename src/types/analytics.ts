@@ -1,8 +1,24 @@
+export interface PaymentMethodRevenue {
+  paymentMethod: string;
+  revenue: number;
+  orders: number;
+}
+
+export interface CategoryRevenue {
+  categoryName: string;
+  revenue: number;
+  orders: number;
+}
+
 export interface FinancialMetrics {
   grossRevenue: number;
   returnedRevenue: number;
   netRevenue: number;
   aov: number;
+  revenueGrowth: number;
+  previousPeriodRevenue: number;
+  revenueByPaymentMethod: PaymentMethodRevenue[];
+  revenueByCategory: CategoryRevenue[];
 }
 
 export interface StatusBreakdown {
@@ -16,6 +32,8 @@ export interface OrderMetrics {
   completed: number;
   cancelled: number;
   returned: number;
+  orderGrowth: number;
+  previousPeriodOrders: number;
   statusBreakdown: StatusBreakdown[];
 }
 
