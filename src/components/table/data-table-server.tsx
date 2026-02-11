@@ -80,7 +80,7 @@ export default function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className={cn("rounded-md dark:bg-dark-primary", className)}>
+      <div className={cn("rounded-md dark:bg-dark-primary overflow-x-auto", className)}>
         <Table>
           {showHeader && (
             <TableHeader>
@@ -89,9 +89,9 @@ export default function DataTable<TData, TValue>({
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="text-sm  text-gray-800 dark-border  bg-slate-100 dark:text-gray-200 font-medium whitespace-nowrap"
+                      className="text-xs md:text-sm text-gray-800 dark-border bg-slate-100 dark:text-gray-200 font-medium whitespace-nowrap"
                     >
-                      <span className="flex justify-between  px-4 text-gray-700 dark:text-gray-200 font-semibold items-center">
+                      <span className="flex justify-between px-2 md:px-4 text-gray-700 dark:text-gray-200 font-semibold items-center">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -114,7 +114,7 @@ export default function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row?.getVisibleCells().map((cell) => (
-                    <TableCell className="px-6">
+                    <TableCell className="px-2 md:px-6 py-2">
                       <ErrorBoundary key={cell.id}>
                         {flexRender(
                           cell?.column.columnDef.cell,
@@ -138,15 +138,15 @@ export default function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex w-full items-center border-t bg-white px-5 pt-8">
-        <div className="font-semibold">
+      <div className="flex w-full flex-col sm:flex-row items-start sm:items-center border-t bg-white px-4 md:px-5 pt-8 gap-4">
+        <div className="font-semibold text-sm md:text-base">
           {pagination.pageIndex + 1} of {totalPage ? totalPage : 1}
           {" page(s)"} shown.
         </div>
-        <div className="ml-auto   w-fit ">
+        <div className="ml-auto w-full sm:w-fit flex gap-2">
           <Button
             variant="outline"
-            className="mr-5 text-black"
+            className="text-black flex-1 sm:flex-none text-xs md:text-sm"
             disabled={!table.getCanPreviousPage()}
             onClick={table.previousPage}
           >
@@ -154,7 +154,7 @@ export default function DataTable<TData, TValue>({
           </Button>
           <Button
             variant="outline"
-            className="text-black"
+            className="text-black flex-1 sm:flex-none text-xs md:text-sm"
             disabled={!table.getCanNextPage()}
             onClick={table.nextPage}
           >

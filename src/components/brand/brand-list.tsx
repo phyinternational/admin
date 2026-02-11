@@ -50,18 +50,18 @@ const BrandsList = () => {
 
   return (
     <section className="">
-      <h2 className="mb-2 text-3xl tracking-wide">Brands List</h2>{" "}
+      <h2 className="mb-2 text-2xl md:text-3xl tracking-wide">Brands List</h2>{" "}
       {/* Update heading */}
-      <div className="mt-4 rounded-lg border bg-white px-4 py-6">
-        <header className="mb-5  ml-2 flex items-center">
-          <span className="mr-3 h-8 w-5 rounded-md bg-violet-300"></span>
+      <div className="mt-4 rounded-lg border bg-white px-4 md:px-6 py-6">
+        <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <span className="flex-shrink-0 h-8 w-5 rounded-md bg-violet-300"></span>
           <Input
             value={filter.search}
             placeholder="Search Brands here"
             onChange={(e) =>
               setFilter((prev) => ({ ...prev, search: e.target.value }))
             }
-            className="w-96 placeholder:text-base"
+            className="w-full sm:w-96 placeholder:text-base"
             ref={searchInput}
           />
           <Link to="/dashboard/brands/add" className="ml-auto">
@@ -69,13 +69,15 @@ const BrandsList = () => {
           </Link>
         </header>
         {isSuccess && (
-          <DataTable
-            columns={BrandColumns} // Update columns
-            data={brands} // Update data
-            page={filter.pageIndex}
-            totalPage={Math.ceil(data.data.data?.total / data.data.data?.limit)}
-            changePage={changePage}
-          />
+          <div className="overflow-x-auto">
+            <DataTable
+              columns={BrandColumns} // Update columns
+              data={brands} // Update data
+              page={filter.pageIndex}
+              totalPage={Math.ceil(data.data.data?.total / data.data.data?.limit)}
+              changePage={changePage}
+            />
+          </div>
         )}
         {isLoading && <LoadingScreen />}
       </div>

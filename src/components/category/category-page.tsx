@@ -82,16 +82,20 @@ const CategoryPage = () => {
             <Button>Add Sub Category</Button>
           </Link>
         </div>
-        <header className="mb-5  ml-2 flex items-center">
-          <span className="mr-3 h-8 w-5 rounded-md bg-violet-300"></span>
+        <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <span className="flex-shrink-0 h-8 w-5 rounded-md bg-violet-300"></span>
           <Input
             value={search}
             placeholder="Search sub categories here"
             onChange={(e) => setSearch(e.target.value)}
-            className="w-96 placeholder:text-base"
+            className="w-full sm:w-96 placeholder:text-base"
           />
         </header>
-        {isSuccess && <DataTable columns={CategoryColumns} data={categorys} />}
+        {isSuccess && (
+          <div className="overflow-x-auto">
+            <DataTable columns={CategoryColumns} data={categorys} />
+          </div>
+        )}
         {isLoading && <LoadingScreen />}
       </div>
     </section>

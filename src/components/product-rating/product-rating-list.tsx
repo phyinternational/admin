@@ -26,15 +26,15 @@ const ProductRatingList = () => {
 
   return (
     <section className="">
-      <h2 className="mb-2 text-3xl tracking-wide">ProductRatings List</h2>
-      <div className="mt-4 rounded-lg border bg-white px-4 py-6">
-        <header className="mb-5  ml-2 flex items-center">
-          <span className="mr-3 h-8 w-5 rounded-md bg-violet-300"></span>
+      <h2 className="mb-2 text-2xl md:text-3xl tracking-wide">ProductRatings List</h2>
+      <div className="mt-4 rounded-lg border bg-white px-4 md:px-6 py-6">
+        <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <span className="flex-shrink-0 h-8 w-5 rounded-md bg-violet-300"></span>
           <Input
             value={search}
             placeholder="Search product Ratings here"
             onChange={(e) => setSearch(e.target.value)}
-            className="w-96 placeholder:text-base"
+            className="w-full sm:w-96 placeholder:text-base"
           />
           <Link
             className="ml-auto"
@@ -46,7 +46,9 @@ const ProductRatingList = () => {
           </Link>
         </header>
         {isSuccess && (
-          <DataTable columns={ProductRatingColumns} data={productRatings} />
+          <div className="overflow-x-auto">
+            <DataTable columns={ProductRatingColumns} data={productRatings} />
+          </div>
         )}
         {isLoading && <LoadingScreen />}
       </div>
