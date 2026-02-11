@@ -52,7 +52,7 @@ export const BannerColumns: ColumnDef<Banner>[] = [
               banner.isActive ? "text-green-700" : "text-gray-400"
             }`}
           >
-            {banner.isActive ? "Active" : "Inactive"}
+            {banner.isActive ? "Published" : "Draft"}
           </span>
         </div>
       );

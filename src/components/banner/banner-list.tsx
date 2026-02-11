@@ -54,7 +54,7 @@ const BannersList = () => {
 
       if (filter.status) {
         filtered = filtered.filter((banner) =>
-          banner.isActive === (filter.status === "active")
+          banner.isActive === (filter.status === "published")
         );
       }
 
@@ -158,8 +158,8 @@ const BannersList = () => {
               value={filter.status}
               onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
               options={[
-                { value: "active", label: "Active" },
-                { value: "inactive", label: "Inactive" },
+                { value: "published", label: "Published" },
+                { value: "draft", label: "Draft" },
               ]}
             />
           </header>

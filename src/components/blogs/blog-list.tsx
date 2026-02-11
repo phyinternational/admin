@@ -43,7 +43,7 @@ const BlogsList = () => {
 
       if (filter.status) {
         filtered = filtered.filter((blog: any) =>
-          filter.status === "published" ? blog.isPublished : !blog.isPublished
+          filter.status === "published" ? blog.isActive : !blog.isActive
         );
       }
 

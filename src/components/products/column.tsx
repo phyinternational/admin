@@ -54,13 +54,13 @@ export const ProductColumns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "isActive",
-    header: "Is Active",
+    header: "Status",
     cell: ({ row }) => {
       const isActive: any = row.original.isActive;
       // console.log(isActive);
       return (
-        <Badge variant={!isActive ? "destructive" : "default"}>
-          {isActive ? "Active" : "Deleted"}
+        <Badge variant={!isActive ? "secondary" : "default"}>
+          {isActive ? "Published" : "Draft"}
         </Badge>
       );
     },

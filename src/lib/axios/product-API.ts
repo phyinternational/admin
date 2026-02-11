@@ -5,10 +5,11 @@ export const productAPI = {
   getProducts: async (filter:any) => {
     return instance.get('/product/all',{
       params: {
-        page:filter.pageIndex+1,
-        search:filter.search,
-        // Add filter for jewelry categories if needed
-        category: filter.category,
+        page: filter.pageIndex + 1,
+        limit: filter.pageSize,
+        search: filter.search || undefined,
+        category: filter.category || undefined,
+        isActive: filter.status === "published" ? true : filter.status === "draft" ? false : undefined,
       }
     });
   },

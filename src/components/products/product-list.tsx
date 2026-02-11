@@ -19,8 +19,7 @@ type TableFilter = {
 };
 const ProductList = () => {
   const [search, setSearch] = useState<string>("");
-  const searchInput = useRef<HTMLInputElement>();
-  const [products, setproducts] = useState<Product[]>([]);
+  const searchInput = useRef<HTMLInputElement>(null);
   const [filter, setFilter] = useState<TableFilter>({
     pageIndex: 0,
     pageSize: 10,
@@ -46,17 +45,32 @@ const ProductList = () => {
 
   const { isLoading, data, isSuccess } = useGetProducts(filter);
 
-  useEffect(() => {
-    if (isSuccess) {
-      const products: Product[] = Array.from(data.data.data.products);
+  const products = useMemo(() => {
+    if (isSuccess && data) {
+      let filtered: Product[] = Array.from(data.data.data.products);
 
-      setproducts(products);
+      // Client-side filtering as fallback since backend filters might be inconsistent
+      if (filter.category) {
+        filtered = filtered.filter((product) => {
+          const cat: any = product.category;
+          return cat === filter.category || cat?._id === filter.category;
+        });
+      }
+
+      if (filter.status) {
+        filtered = filtered.filter((product) =>
+          product.isActive === (filter.status === "active")
+        );
+      }
+
+      return filtered;
     }
-  }, [isSuccess, data]);
+    return [];
+  }, [isSuccess, data, filter.category, filter.status]);
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
-  });
+  }, []);
   useEffect(() => {
     setFilter((prev) => ({ ...prev, search, pageIndex: 0 }));
   }, [search]);
@@ -79,13 +93,13 @@ const ProductList = () => {
           <FilterSelect
             label="Category"
             value={filter.category}
-            onChange={(category) => setFilter((prev) => ({ ...prev, category }))}
+            onChange={(category) => setFilter((prev) => ({ ...prev, category, pageIndex: 0 }))}
             options={categoryOptions}
           />
           <FilterSelect
             label="Status"
             value={filter.status}
-            onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
+            onChange={(status) => setFilter((prev) => ({ ...prev, status, pageIndex: 0 }))}
             options={[
               { value: "active", label: "Active" },
               { value: "inactive", label: "Inactive" },

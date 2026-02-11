@@ -54,8 +54,8 @@ export const BlogColumns: ColumnDef<Blog>[] = [
             onCheckedChange={() => toggleMutation.mutate(row.original._id)}
             disabled={toggleMutation.isPending}
           />
-          <span className={row.original.isActive ? "text-green-600" : "text-red-600 text-sm font-medium"}>
-            {row.original.isActive ? "Active" : "Inactive"}
+          <span className={row.original.isActive ? "text-green-600" : "text-gray-400 text-sm font-medium"}>
+            {row.original.isActive ? "Published" : "Draft"}
           </span>
         </div>
       );

@@ -25,8 +25,8 @@ export const CategoryColumns: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       const isActive: boolean = row.original?.isActive;
       return (
-        <Badge variant={!isActive ? "destructive" : "default"}>
-          {isActive ? "Active" : "Inactive"}
+        <Badge variant={!isActive ? "secondary" : "default"}>
+          {isActive ? "Published" : "Draft"}
         </Badge>
       );
     },
