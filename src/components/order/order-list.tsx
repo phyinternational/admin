@@ -154,7 +154,7 @@ const OrdersList = () => {
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
-  });
+  }, []);
   useEffect(() => {
     setFilter((f) => ({ ...f, search, pageIndex: 0 }));
   }, [search]);

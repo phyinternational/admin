@@ -53,7 +53,7 @@ const CategoryList = () => {
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
-  });
+  }, []);
   useEffect(() => {
     setFilter((prev) => ({ ...prev, search, pageIndex: 0 }));
   }, [search]);

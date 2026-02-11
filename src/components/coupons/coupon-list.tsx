@@ -59,7 +59,7 @@ const CouponsList = () => {
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
-  });
+  }, []);
 
   useEffect(() => {
     setFilter((prev) => ({ ...prev, search, pageIndex: 0 }));
