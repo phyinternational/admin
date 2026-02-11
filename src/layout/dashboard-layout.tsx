@@ -26,7 +26,7 @@ const DashboardLayout = () => {
         </Sheet>
 
         <NavBar />
-        <main className="pt-24 p-4 md:p-8 lg:p-12 min-h-screen">
+        <main className="pt-28 p-4 md:p-8 lg:p-12 min-h-screen">
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>
