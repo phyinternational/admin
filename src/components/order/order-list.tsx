@@ -161,47 +161,13 @@ const OrdersList = () => {
 
   return (
     <section className="space-y-6">
-      {/* Header with Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+      {/* Header with Title */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent whitespace-nowrap">
             Orders Management
           </h2>
           <p className="text-sm text-gray-500 mt-1">Track and manage all customer orders</p>
-        </div>
-        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          <div className="flex flex-col gap-2 w-full sm:w-auto">
-            <label className="text-sm font-medium text-gray-700">Search</label>
-            <Input
-              ref={searchInput}
-              value={search}
-              placeholder="Search ID, User, or Phone..."
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full sm:w-96 placeholder:text-base h-10"
-            />
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters(!showFilters)}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 transition-all shadow-sm ${
-              showFilters
-                ? 'bg-blue-50 border-blue-500 text-blue-600 shadow-blue-100'
-                : 'hover:border-blue-400'
-            }`}
-          >
-            <Filter size={18} />
-            {showFilters ? 'Hide Filters' : 'Advanced Filters'}
-          </Button>
-          {(filter.startDate || filter.endDate || filter.paymentMode !== 'ALL' || filter.paymentStatus !== 'ALL' || filter.minPrice || filter.maxPrice || filter.search) && (
-            <Button
-              variant="ghost"
-              onClick={resetFilters}
-              className="flex-1 sm:flex-none text-red-500 hover:text-red-600 hover:bg-red-50 flex items-center justify-center gap-1 transition-all"
-            >
-              <X size={16} />
-              Reset Filters
-            </Button>
-          )}
         </div>
       </div>
 
@@ -332,18 +298,42 @@ const OrdersList = () => {
           </div>
         )}
 
-        {/* Search Bar */}
-        <div className="p-6 border-b border-gray-200 bg-white">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        {/* Card Header with Search and Advanced Filters Toggle */}
+        <header className="px-6 py-5 flex flex-col sm:flex-row items-start sm:items-end gap-3 border-b border-gray-100">
+          <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0 mb-1"></span>
+          <div className="flex flex-col gap-2 w-full sm:w-96">
+            <label className="text-sm font-medium text-gray-700">Search</label>
             <Input
+              ref={searchInput}
               value={search}
-              placeholder="Search by Order ID, User name, or Phone..."
+              placeholder="Search ID, User, or Phone..."
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 h-11 bg-gray-50 border-gray-300 focus:bg-white focus:border-blue-500 focus:ring-blue-500 shadow-sm transition-all"
+              className="w-full placeholder:text-base h-10"
             />
           </div>
-        </div>
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex-1 sm:flex-none h-10 flex items-center justify-center gap-2 transition-all shadow-sm ${
+              showFilters
+                ? 'bg-blue-50 border-blue-500 text-blue-600 shadow-blue-100'
+                : 'hover:border-blue-400'
+            }`}
+          >
+            <Filter size={18} />
+            {showFilters ? 'Hide Filters' : 'Advanced Filters'}
+          </Button>
+          {(filter.startDate || filter.endDate || filter.paymentMode !== 'ALL' || filter.paymentStatus !== 'ALL' || filter.minPrice || filter.maxPrice || filter.search) && (
+            <Button
+              variant="ghost"
+              onClick={resetFilters}
+              className="flex-1 sm:flex-none h-10 text-red-500 hover:text-red-600 hover:bg-red-50 flex items-center justify-center gap-1 transition-all"
+            >
+              <X size={16} />
+              Reset
+            </Button>
+          )}
+        </header>
 
         {/* Orders Table */}
         <div className="p-6 overflow-x-auto">
