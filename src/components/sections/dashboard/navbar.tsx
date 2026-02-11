@@ -27,7 +27,7 @@ export const NavBar = () => {
             <Logo />
           </div>
 
-          <div className="mr-4 lg:mr-8 ml-auto mt-2 h-fit">
+          <div className="mr-4 lg:mr-8 ml-auto h-fit">
             <NotificationMenu />
           </div>
           <UserMenu />

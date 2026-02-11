@@ -61,15 +61,18 @@ const BrandsList = () => {
       <div className="rounded-lg border bg-white px-4 md:px-6 py-6 shadow-sm">
         <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-end gap-3">
           <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0 mb-1"></span>
-          <Input
-            value={filter.search}
-            placeholder="Search Brands here"
-            onChange={(e) =>
-              setFilter((prev) => ({ ...prev, search: e.target.value }))
-            }
-            className="w-full sm:w-96 placeholder:text-base"
-            ref={searchInput}
-          />
+          <div className="flex flex-col gap-2 w-full sm:w-96">
+            <label className="text-sm font-medium text-gray-700">Search</label>
+            <Input
+              value={filter.search}
+              placeholder="Search Brands here"
+              onChange={(e) =>
+                setFilter((prev) => ({ ...prev, search: e.target.value }))
+              }
+              className="w-full placeholder:text-base"
+              ref={searchInput}
+            />
+          </div>
           <Link to="/dashboard/brands/add" className="ml-auto">
             <Button>Add Brand</Button>
           </Link>

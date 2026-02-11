@@ -162,7 +162,7 @@ const OrdersList = () => {
   return (
     <section className="space-y-6">
       {/* Header with Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
             Orders Management
@@ -170,6 +170,16 @@ const OrdersList = () => {
           <p className="text-sm text-gray-500 mt-1">Track and manage all customer orders</p>
         </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <div className="flex flex-col gap-2 w-full sm:w-auto">
+            <label className="text-sm font-medium text-gray-700">Search</label>
+            <Input
+              ref={searchInput}
+              value={search}
+              placeholder="Search Orders here"
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full sm:w-96 placeholder:text-base h-10"
+            />
+          </div>
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}

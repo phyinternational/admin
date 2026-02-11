@@ -57,12 +57,15 @@ const ColorList = () => {
       <div className="rounded-lg border bg-white px-4 md:px-6 py-6 shadow-sm">
         <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-end gap-3">
           <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0 mb-1"></span>
-          <Input
-            value={search}
-            placeholder="Search Color here"
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-96 placeholder:text-base"
-          />
+          <div className="flex flex-col gap-2 w-full sm:w-96">
+            <label className="text-sm font-medium text-gray-700">Search</label>
+            <Input
+              value={search}
+              placeholder="Search Color here"
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full placeholder:text-base"
+            />
+          </div>
         </header>
         {isSuccess && (
           <div className="overflow-x-auto">

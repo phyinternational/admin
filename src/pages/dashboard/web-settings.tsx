@@ -7,7 +7,7 @@ import {
   useUpdateConstants,
 } from "@/lib/react-query/auth-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Settings2 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -65,15 +65,27 @@ const WebSettingsForm = () => {
   if (isLoading) return <Skeleton className="w-72 h-72" />;
 
   return (
-    <main className="max-w-lg bg-white p-4 rounded-md  ">
-      <FormProvider
-        className="space-y-4"
-        methods={form}
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <h2 className="font-semibold text-gray-800 text-xl mb-4">
-          Web Settings
-        </h2>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Web Settings
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">Configure global store constants and shipping thresholds</p>
+        </div>
+      </div>
+      <main className="max-w-lg bg-white p-6 rounded-lg border shadow-sm">
+        <FormProvider
+          className="space-y-4"
+          methods={form}
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <Settings2 className="text-gray-400" size={20} />
+            <h3 className="font-semibold text-gray-800 text-lg">
+              General Configuration
+            </h3>
+          </div>
 
         <FormInput
           control={form.control}
