@@ -35,7 +35,7 @@ type TableFilter = {
 
 const OrdersList = () => {
   const [search, setSearch] = useState<string>("");
-  const searchInput = useRef<HTMLInputElement>();
+  const searchInput = useRef<HTMLInputElement>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [filter, setFilter] = useState<TableFilter>({
     pageIndex: 0,
