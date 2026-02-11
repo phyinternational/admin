@@ -14,6 +14,7 @@ type TableFilter = {
   search: string;
   status: string;
 };
+// Category list component for managing and viewing all categories
 const CategoryList = () => {
   const [search, setSearch] = useState<string>("");
   const searchInput = useRef<HTMLInputElement>();
@@ -66,7 +67,7 @@ const CategoryList = () => {
           <Input
             ref={searchInput}
             value={search}
-            placeholder="Search categorys here"
+            placeholder="Search categories here"
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-96 placeholder:text-base"
           />
