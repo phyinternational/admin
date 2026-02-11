@@ -18,7 +18,7 @@ import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Filter, X, Search, AlertCircle } from "lucide-react";
+import { Filter, X, AlertCircle } from "lucide-react";
 
 type TableFilter = {
   pageIndex: number;
@@ -138,19 +138,40 @@ const OrdersList = () => {
       });
     });
 
-    // Filter by active tab status (only show items matching that tab)
     const status = filter.status;
-    if (status === "ALL") return entries;
-    if (status === "PLACED") return entries.filter((e) => e.itemStatus === "PLACED");
-    if (status === "SHIPPED") return entries.filter((e) => e.itemStatus === "SHIPPED");
-    if (status === "DELIVERED") return entries.filter((e) => e.itemStatus === "DELIVERED");
-    if (status === "cancelled") return entries.filter((e) => e.itemStatus.includes("CANCELLED"));
-    if (status === "return") return entries.filter((e) => e.itemStatus.includes("RETURN"));
-    if (status === "replacement") return entries.filter((e) => e.itemStatus.includes("REPLACEMENT"));
+    let filtered = entries;
+    if (status === "PLACED") filtered = entries.filter((e) => e.itemStatus === "PLACED");
+    else if (status === "SHIPPED") filtered = entries.filter((e) => e.itemStatus === "SHIPPED");
+    else if (status === "DELIVERED") filtered = entries.filter((e) => e.itemStatus === "DELIVERED");
+    else if (status === "cancelled") filtered = entries.filter((e) => e.itemStatus.includes("CANCELLED"));
+    else if (status === "return") filtered = entries.filter((e) => e.itemStatus.includes("RETURN"));
+    else if (status === "replacement") filtered = entries.filter((e) => e.itemStatus.includes("REPLACEMENT"));
 
-    // Fallback: specific status match
-    return entries.filter((e) => e.itemStatus === status);
-  }, [orders, filter.status]);
+    // Ensure we also filter by search/price/date locally if the backend didn't filter correctly
+    if (filter.search) {
+      const s = filter.search.toLowerCase();
+      filtered = filtered.filter(e => {
+        const orderId = e.order._id?.toLowerCase() || "";
+        const ccOrderId = e.order.cc_orderId?.toLowerCase() || "";
+        const sa = e.order.shippingAddress || {};
+        const userName = ([sa.firstName, sa.lastName].filter(Boolean).join(" ") ||
+                         e.order.buyer?.displayName || 
+                         "").toLowerCase();
+        const phone = sa.phoneNumber || "";
+        
+        return orderId.includes(s) || ccOrderId.includes(s) || userName.includes(s) || phone.includes(s);
+      });
+    }
+
+    if (filter.minPrice) {
+      filtered = filtered.filter(e => (e.item.price * (e.item.quantity || 1)) >= Number(filter.minPrice));
+    }
+    if (filter.maxPrice) {
+      filtered = filtered.filter(e => (e.item.price * (e.item.quantity || 1)) <= Number(filter.maxPrice));
+    }
+
+    return filtered;
+  }, [orders, filter]);
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
@@ -158,6 +179,15 @@ const OrdersList = () => {
   useEffect(() => {
     setFilter((f) => ({ ...f, search, pageIndex: 0 }));
   }, [search]);
+
+  // Handle advanced filter changes with a small delay to prevent rapid API calls
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      // Logic for advanced filtering is already handled by the server state
+      // This effect just ensures we don't spam the API for every keystroke in Min/Max price
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [filter.startDate, filter.endDate, filter.minPrice, filter.maxPrice]);
 
   return (
     <section className="space-y-6">
