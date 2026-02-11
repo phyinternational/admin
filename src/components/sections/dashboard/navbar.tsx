@@ -11,7 +11,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <nav className="fixed w-full lg:w-[calc(100vw-300px)] px-4 lg:px-12 z-50 border-b bg-white">
+      <nav className="fixed top-0 right-0 w-full lg:w-[calc(100vw-300px)] px-4 lg:px-8 z-50 border-b bg-white/80 backdrop-blur-md">
         <div className="flex h-16 items-center justify-between px-2 lg:px-4">
           {/* Mobile Menu Button */}
           <Button
@@ -23,7 +23,7 @@ export const NavBar = () => {
             <Menu className="h-6 w-6" />
           </Button>
 
-          <div className="flex-1 lg:flex-none">
+          <div className="flex-1 lg:hidden">
             <Logo />
           </div>
 
