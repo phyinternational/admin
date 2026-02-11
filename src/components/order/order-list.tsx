@@ -175,7 +175,7 @@ const OrdersList = () => {
             <Input
               ref={searchInput}
               value={search}
-              placeholder="Search Orders here"
+              placeholder="Search ID, User, or Phone..."
               onChange={(e) => setSearch(e.target.value)}
               className="w-full sm:w-96 placeholder:text-base h-10"
             />
@@ -346,7 +346,7 @@ const OrdersList = () => {
         </div>
 
         {/* Orders Table */}
-        <div className="p-6">
+        <div className="p-6 overflow-x-auto">
           {isSuccess && (
             <DataTable
               columns={columns}
