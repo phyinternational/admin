@@ -9,7 +9,7 @@ export const productAPI = {
         limit: filter.pageSize,
         search: filter.search || undefined,
         category: filter.category || undefined,
-        isActive: filter.status === "published" ? true : filter.status === "draft" ? false : undefined,
+        isActive: filter.status === "active" ? true : filter.status === "inactive" ? false : undefined,
       }
     });
   },

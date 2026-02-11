@@ -59,8 +59,8 @@ export const ProductColumns: ColumnDef<Product>[] = [
       const isActive: any = row.original.isActive;
       // console.log(isActive);
       return (
-        <Badge variant={!isActive ? "secondary" : "default"}>
-          {isActive ? "Published" : "Draft"}
+        <Badge variant={!isActive ? "destructive" : "default"}>
+          {isActive ? "Active" : "Inactive"}
         </Badge>
       );
     },

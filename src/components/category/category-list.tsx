@@ -41,7 +41,7 @@ const CategoryList = () => {
 
       if (filter.status) {
         filtered = filtered.filter((category) =>
-          category.isActive === (filter.status === "published")
+          category.isActive === (filter.status === "active")
         );
       }
 
@@ -75,8 +75,8 @@ const CategoryList = () => {
             value={filter.status}
             onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
             options={[
-              { value: "published", label: "Published" },
-              { value: "draft", label: "Draft" },
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
             ]}
           />
         </header>

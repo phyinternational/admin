@@ -94,21 +94,21 @@ const BannersList = () => {
 
   return (
     <section className="">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-3xl tracking-wide">Banners List</h2>
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+        <h2 className="text-2xl md:text-3xl tracking-wide">Banners List</h2>
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
           {!isReordering ? (
             <>
               <Button
                 variant="outline"
-                className="flex items-center gap-2"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2"
                 onClick={() => setIsReordering(true)}
               >
                 <ArrowUpDown size={16} />
                 Update Position
               </Button>
-              <Link to="/dashboard/banners/add">
-                <Button className="bg-violet-600 hover:bg-violet-700 text-white">
+              <Link to="/dashboard/banners/add" className="flex-1 sm:flex-none">
+                <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white flex items-center justify-center">
                   Add Banner
                 </Button>
               </Link>
@@ -117,14 +117,14 @@ const BannersList = () => {
             <>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 text-gray-500"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 text-gray-500"
                 onClick={handleCancel}
               >
                 <X size={16} />
                 Cancel
               </Button>
               <Button
-                className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+                className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2"
                 onClick={handleSaveOrder}
                 disabled={reorderMutation.isPending}
               >

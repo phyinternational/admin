@@ -162,18 +162,18 @@ const OrdersList = () => {
   return (
     <section className="space-y-6">
       {/* Header with Actions */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
             Orders Management
           </h2>
           <p className="text-sm text-gray-500 mt-1">Track and manage all customer orders</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 transition-all shadow-sm ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 transition-all shadow-sm ${
               showFilters
                 ? 'bg-blue-50 border-blue-500 text-blue-600 shadow-blue-100'
                 : 'hover:border-blue-400'
@@ -186,7 +186,7 @@ const OrdersList = () => {
             <Button
               variant="ghost"
               onClick={resetFilters}
-              className="text-red-500 hover:text-red-600 hover:bg-red-50 flex items-center gap-1 transition-all"
+              className="flex-1 sm:flex-none text-red-500 hover:text-red-600 hover:bg-red-50 flex items-center justify-center gap-1 transition-all"
             >
               <X size={16} />
               Reset Filters
