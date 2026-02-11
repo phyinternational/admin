@@ -111,6 +111,7 @@ const WebSettingsForm = () => {
         </Button>
       </FormProvider>
     </main>
+  </div>
   );
 };
 
