@@ -130,7 +130,7 @@ export function DateRangePicker({
                 )}
               >
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                <span className="truncate max-w-[120px] sm:max-w-none">{format(date.from, "MMM dd")}</span>
+                <span className="truncate max-w-[140px] sm:max-w-none">{format(date.from, "MMM dd, yy")}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -154,7 +154,7 @@ export function DateRangePicker({
                 )}
               >
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                <span className="truncate max-w-[120px] sm:max-w-none">{format(date.to, "MMM dd")}</span>
+                <span className="truncate max-w-[140px] sm:max-w-none">{format(date.to, "MMM dd, yy")}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">

@@ -22,6 +22,8 @@ import {
   Users,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { MobileMenuContext } from "@/context/MobileMenuContext";
 
 type Tab = {
   label: string;
@@ -142,10 +144,16 @@ type TabButtonProps = {
 const TabButton = ({ className, tab }: TabButtonProps) => {
   let isActive = false;
   const location = useLocation();
+  const mobileMenu = useContext(MobileMenuContext);
   location.pathname === tab.href ? (isActive = true) : (isActive = false);
   const activeStyles = isActive
     ? " text-gray-800  active-sidebar-link shadow group group-active"
     : "";
+
+  const handleNavigation = () => {
+    // Close mobile menu when navigating
+    mobileMenu?.close();
+  };
 
   if (tab.subMenu)
     return (
@@ -173,6 +181,7 @@ const TabButton = ({ className, tab }: TabButtonProps) => {
                   to={`/dashboard${tab.href}`}
                   className="flex justify-center"
                   key={i}
+                  onClick={handleNavigation}
                 >
                   <Button
                     variant={"ghost"}
@@ -195,7 +204,7 @@ const TabButton = ({ className, tab }: TabButtonProps) => {
     );
 
   return (
-    <Link to={`/dashboard${tab.href}`} className="w-full">
+    <Link to={`/dashboard${tab.href}`} className="w-full" onClick={handleNavigation}>
       <Button
         variant={"ghost"}
         className={cn(

@@ -5,12 +5,14 @@ import { CategoryColumns } from "./columns";
 import Category from "./category-model";
 import { useGetCategories } from "@/lib/react-query/category-query";
 import { DataTable } from "../table/data-table";
+import { FilterSelect } from "../filters/filter-select";
 
 type TableFilter = {
   date: string;
   pageIndex: number;
   pageSize: number;
   search: string;
+  status: string;
 };
 const CategoryList = () => {
   const [search, setSearch] = useState<string>("");
@@ -20,6 +22,7 @@ const CategoryList = () => {
     pageSize: 10,
     date: "",
     search: "",
+    status: "",
   });
 
   const { isLoading, data, isSuccess } = useGetCategories();
@@ -28,22 +31,30 @@ const CategoryList = () => {
     if (isSuccess) {
       const categories: Category[] = Array.from(data.data.data.categories);
 
-      return categories
+      let filtered = categories
         .filter((category) =>
           category?.name
             ?.toLocaleLowerCase()
             .includes(filter?.search.toLocaleLowerCase())
         )
         .filter((category) => !category.parentId);
+
+      if (filter.status) {
+        filtered = filtered.filter((category) =>
+          category.isActive === (filter.status === "active")
+        );
+      }
+
+      return filtered;
     }
     return [];
-  }, [isSuccess, data, filter.search]);
+  }, [isSuccess, data, filter.search, filter.status]);
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
   });
   useEffect(() => {
-    setFilter({ search, pageIndex: 0, pageSize: 10, date: "" });
+    setFilter((prev) => ({ ...prev, search, pageIndex: 0 }));
   }, [search]);
 
   return (
@@ -58,6 +69,15 @@ const CategoryList = () => {
             placeholder="Search categorys here"
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-96 placeholder:text-base"
+          />
+          <FilterSelect
+            label="Status"
+            value={filter.status}
+            onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
+            options={[
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
+            ]}
           />
         </header>
         <div className="overflow-x-auto">

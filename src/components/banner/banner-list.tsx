@@ -10,11 +10,13 @@ import { Button } from "../ui/button";
 import BannerReorderList from "./BannerReorderList";
 import { ArrowUpDown, Save, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { FilterSelect } from "../filters/filter-select";
 
 type TableFilter = {
   pageIndex: number;
   pageSize: number;
   search: string;
+  status: string;
 };
 
 const BannersList = () => {
@@ -23,6 +25,7 @@ const BannersList = () => {
     pageIndex: 0,
     pageSize: 10,
     search: "",
+    status: "",
   });
 
   const [isReordering, setIsReordering] = useState(false);
@@ -41,15 +44,24 @@ const BannersList = () => {
       // Sort by position initially
       const sorted = [...banners].sort((a, b) => (a.position || 0) - (b.position || 0));
 
+      let filtered = sorted;
+      
       if (filter.search) {
-        return sorted.filter((banner) =>
+        filtered = filtered.filter((banner) =>
           banner.title.toLowerCase().includes(filter.search.toLowerCase())
         );
       }
-      return sorted;
+
+      if (filter.status) {
+        filtered = filtered.filter((banner) =>
+          banner.isActive === (filter.status === "active")
+        );
+      }
+
+      return filtered;
     }
     return [];
-  }, [isSuccess, data, filter.search]);
+  }, [isSuccess, data, filter.search, filter.status]);
 
   useEffect(() => {
     if (banners.length > 0 && !isReordering) {
@@ -140,6 +152,15 @@ const BannersList = () => {
               }
               className="w-full sm:w-96 placeholder:text-base"
               ref={searchInput}
+            />
+            <FilterSelect
+              label="Status"
+              value={filter.status}
+              onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
+              options={[
+                { value: "active", label: "Active" },
+                { value: "inactive", label: "Inactive" },
+              ]}
             />
           </header>
         )}

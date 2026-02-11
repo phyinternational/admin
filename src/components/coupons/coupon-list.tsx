@@ -5,6 +5,8 @@ import { Input } from "../ui/input";
 import Coupon from "./coupons"; // Assuming you have a Coupon type defined
 import { useGetCoupons } from "@/lib/react-query/coupon-query"; // Assuming you have a hook to fetch coupons
 import { CouponColumns } from "./column"; // Assuming you have defined columns for the coupons table
+import { FilterSelect } from "../filters/filter-select";
+import dayjs from "dayjs";
 
 type TableFilter = {
   startDate: string;
@@ -12,6 +14,7 @@ type TableFilter = {
   pageIndex: number;
   pageSize: number;
   search: string;
+  status: string;
 };
 
 const CouponsList = () => {
@@ -23,6 +26,7 @@ const CouponsList = () => {
     startDate: "",
     endDate: "",
     search: "",
+    status: "",
   });
 
   const changePage = ({ pageIndex }: { pageIndex: number }) => {
@@ -35,13 +39,23 @@ const CouponsList = () => {
     // axios response -> response.data = { status, data: { coupons, pagination } }
     const raw = data?.data?.data?.coupons ?? [];
     try {
-      return (Array.from(raw).filter((coupon: any) =>
+      let filtered = (Array.from(raw).filter((coupon: any) =>
         (coupon?.couponCode ?? "").toLowerCase().includes(search.toLowerCase())
       ) as Coupon[]) || [];
+
+      if (filter.status) {
+        const now = dayjs();
+        filtered = filtered.filter((coupon: any) => {
+          const isExpired = dayjs(coupon.expiryDate).isBefore(now);
+          return filter.status === "active" ? !isExpired : isExpired;
+        });
+      }
+
+      return filtered;
     } catch (e) {
       return [];
     }
-  }, [data, filter, search]);
+  }, [data, filter, search, filter.status]);
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
@@ -63,6 +77,15 @@ const CouponsList = () => {
             placeholder="Search Coupons here"
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-96 placeholder:text-base"
+          />
+          <FilterSelect
+            label="Status"
+            value={filter.status}
+            onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
+            options={[
+              { value: "active", label: "Active" },
+              { value: "expired", label: "Expired" },
+            ]}
           />
         </header>
         <div className="overflow-x-auto">

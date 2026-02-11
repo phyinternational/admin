@@ -1,28 +1,44 @@
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import LoadingScreen from "../common/loading-screen";
 import DataTable from "../table/data-table-server";
 import Product from "./product";
 import { useGetProducts } from "@/lib/react-query/product-query";
+import { useGetCategories } from "@/lib/react-query/category-query";
 import { Input } from "../ui/input";
 import { ProductColumns } from "./column";
+import { FilterSelect } from "../filters/filter-select";
 
 type TableFilter = {
   date: string;
   pageIndex: number;
   pageSize: number;
   search: string;
+  category: string;
+  status: string;
 };
 const ProductList = () => {
   const [search, setSearch] = useState<string>("");
   const searchInput = useRef<HTMLInputElement>();
   const [products, setproducts] = useState<Product[]>([]);
   const [filter, setFilter] = useState<TableFilter>({
-    pageIndex: 2,
+    pageIndex: 0,
     pageSize: 10,
     date: "",
     search: "",
+    category: "",
+    status: "",
   });
+
+  const { data: categoriesData, isSuccess: categoriesSuccess } = useGetCategories();
+  const categoryOptions = useMemo(() => {
+    if (categoriesSuccess && categoriesData) {
+      return Array.from(categoriesData.data.data.categories)
+        .filter((cat: any) => !cat.parentId)
+        .map((cat: any) => ({ value: cat._id, label: cat.name }));
+    }
+    return [];
+  }, [categoriesSuccess, categoriesData]);
 
   const changePage = ({ pageIndex }: { pageIndex: number }) => {
     setFilter((prev) => ({ ...prev, pageIndex: pageIndex }));
@@ -42,7 +58,7 @@ const ProductList = () => {
     if (searchInput.current) searchInput.current.focus();
   });
   useEffect(() => {
-    setFilter({ search, pageIndex: 0, pageSize: 10, date: "" });
+    setFilter((prev) => ({ ...prev, search, pageIndex: 0 }));
   }, [search]);
 
   // console.log(data?.data?.data)
@@ -59,6 +75,21 @@ const ProductList = () => {
             placeholder="Search products here"
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-96 placeholder:text-base"
+          />
+          <FilterSelect
+            label="Category"
+            value={filter.category}
+            onChange={(category) => setFilter((prev) => ({ ...prev, category }))}
+            options={categoryOptions}
+          />
+          <FilterSelect
+            label="Status"
+            value={filter.status}
+            onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
+            options={[
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
+            ]}
           />
         </header>
         <div className="overflow-x-auto">

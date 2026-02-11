@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import LoadingScreen from "../common/loading-screen";
 import DataTable from "../table/data-table-server";
 import { Input } from "../ui/input";
 import { Blog } from "./blogs";
 import { BlogColumns } from "./columns";
 import { useGetBlogs } from "@/lib/react-query/blog-query";
+import { FilterSelect } from "../filters/filter-select";
 
 
 type TableFilter = {
@@ -12,6 +13,7 @@ type TableFilter = {
   pageIndex: number;
   pageSize: number;
   search: string;
+  status: string;
 };
 const BlogsList = () => {
   const [search, setSearch] = useState<string>("");
@@ -22,6 +24,7 @@ const BlogsList = () => {
     pageSize: 10,
     date: "",
     search: "",
+    status: "",
   });
 
   const changePage = ({ pageIndex }: { pageIndex: number }) => {
@@ -30,19 +33,34 @@ const BlogsList = () => {
 
   const { isLoading, data, isSuccess } = useGetBlogs();
 
-  useEffect(() => {
-    if (isSuccess) {
+  const filteredBlogs = useMemo(() => {
+    if (isSuccess && data) {
       const blogs: Blog[] = Array.from(data.data.data.blogs);
+      
+      let filtered = blogs.filter((blog: any) =>
+        (blog?.title ?? "").toLowerCase().includes(search.toLowerCase())
+      );
 
-      setblogss(blogs);
+      if (filter.status) {
+        filtered = filtered.filter((blog: any) =>
+          filter.status === "published" ? blog.isPublished : !blog.isPublished
+        );
+      }
+
+      return filtered;
     }
-  }, [isSuccess, data]);
+    return [];
+  }, [isSuccess, data, search, filter.status]);
+
+  useEffect(() => {
+    setblogss(filteredBlogs);
+  }, [filteredBlogs]);
 
   useEffect(() => {
     if (searchInput.current) searchInput.current.focus();
   });
   useEffect(() => {
-    setFilter({ search, pageIndex: 0, pageSize: 10, date: "" });
+    setFilter((prev) => ({ ...prev, search, pageIndex: 0 }));
   }, [search]);
 
   return (
@@ -57,7 +75,15 @@ const BlogsList = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-96 placeholder:text-base"
           />
-          
+          <FilterSelect
+            label="Status"
+            value={filter.status}
+            onChange={(status) => setFilter((prev) => ({ ...prev, status }))}
+            options={[
+              { value: "published", label: "Published" },
+              { value: "draft", label: "Draft" },
+            ]}
+          />
         </header>
         {isSuccess && (
           <div className="overflow-x-auto">

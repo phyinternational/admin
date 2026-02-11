@@ -10,7 +10,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 import { BellRingIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Notification, { NotificationData } from "./notification";
 import NotificationCard from "./notification-card";
@@ -19,6 +19,7 @@ import { Separator } from "./ui/separator";
 
 const NotificationMenu = () => {
   const { data, isSuccess } = useGetAllNotificationUnread();
+  const [isOpen, setIsOpen] = useState(false);
 
   const notifications = useMemo(() => {
     if (isSuccess) {
@@ -31,9 +32,13 @@ const NotificationMenu = () => {
     }
   }, [data, isSuccess]);
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger className=" active:outline-blue-400">
           <div className="group relative rounded-sm p-2  hover:bg-gray-100">
             {Boolean(notifications?.length) && (
@@ -52,7 +57,7 @@ const NotificationMenu = () => {
           <DropdownMenuLabel className="mb-2 px-4 py-2">
             <div className="flex items-center justify-between">
               <h4 className="font-semibold text-gray-900">Notification</h4>
-              <Link to="/dashboard/notifications">
+              <Link to="/dashboard/notifications" onClick={handleClose}>
                 <Button
                   variant="link"
                   className="text-xs text-blue-600 hover:text-blue-700 p-0 h-auto font-medium"
@@ -72,7 +77,9 @@ const NotificationMenu = () => {
             </>
           )}
           {notifications?.map((noti) => (
-            <NotificationCard key={noti._id} notification={noti} />
+            <div key={noti._id} onClick={handleClose}>
+              <NotificationCard notification={noti} />
+            </div>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
