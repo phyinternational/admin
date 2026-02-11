@@ -103,10 +103,10 @@ export function DateRangePicker({
   }
 
   return (
-    <div className={cn("grid gap-2", className)}>
-      <div className="flex flex-wrap items-center gap-2">
+    <div className={cn("grid gap-2 w-full", className)}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
         <Select onValueChange={handleSelect} value={preset}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-full sm:w-[160px]">
             <SelectValue placeholder="Select range" />
           </SelectTrigger>
           <SelectContent position="popper">
@@ -118,19 +118,19 @@ export function DateRangePicker({
           </SelectContent>
         </Select>
 
-        <div className="flex items-center gap-2 bg-background border rounded-md px-3 py-1">
-          <span className="text-sm text-muted-foreground font-medium">From:</span>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-background border rounded-md px-3 py-2 sm:py-1 w-full sm:w-auto">
+          <span className="text-xs sm:text-sm text-muted-foreground font-medium">From:</span>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  "h-8 px-2 space-x-2 font-normal hover:bg-transparent",
+                  "h-8 px-2 space-x-2 font-normal hover:bg-transparent text-xs sm:text-sm",
                 )}
               >
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                <span>{format(date.from, "PPP")}</span>
+                <span className="truncate max-w-[120px] sm:max-w-none">{format(date.from, "MMM dd")}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -143,18 +143,18 @@ export function DateRangePicker({
             </PopoverContent>
           </Popover>
 
-          <span className="text-sm text-muted-foreground font-medium border-l pl-2">To:</span>
+          <span className="text-xs sm:text-sm text-muted-foreground font-medium border-t sm:border-t-0 sm:border-l pt-2 sm:pt-0 sm:pl-2">To:</span>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  "h-8 px-2 space-x-2 font-normal hover:bg-transparent",
+                  "h-8 px-2 space-x-2 font-normal hover:bg-transparent text-xs sm:text-sm",
                 )}
               >
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                <span>{format(date.to, "PPP")}</span>
+                <span className="truncate max-w-[120px] sm:max-w-none">{format(date.to, "MMM dd")}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">

@@ -3,11 +3,12 @@ import { NavBar } from "@/components/sections/dashboard/navbar";
 import Sidebar from "@/components/sections/dashboard/sidebar";
 import ErrorBoundary from "@/components/ui/error-boundary";
 import { Outlet } from "react-router";
-import { useMobileMenu } from "@/hooks/useMobileMenu";
+import { useContext } from "react";
+import { MobileMenuContext } from "@/context/MobileMenuContext";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 const DashboardLayout = () => {
-  const { isOpen, close } = useMobileMenu();
+  const mobileMenu = useContext(MobileMenuContext);
   
   return (
     <AuthGuard>
@@ -18,7 +19,7 @@ const DashboardLayout = () => {
         </div>
 
         {/* Mobile Sidebar - Drawer */}
-        <Sheet open={isOpen} onOpenChange={close}>
+        <Sheet open={mobileMenu?.isOpen} onOpenChange={mobileMenu?.close}>
           <SheetContent side="left" className="w-[300px] p-0">
             <Sidebar className="h-full fixed w-[300px] border-r" />
           </SheetContent>
