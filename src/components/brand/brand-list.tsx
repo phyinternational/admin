@@ -49,10 +49,16 @@ const BrandsList = () => {
   }, []);
 
   return (
-    <section className="">
-      <h2 className="mb-2 text-2xl md:text-3xl tracking-wide">Brands List</h2>{" "}
-      {/* Update heading */}
-      <div className="mt-4 rounded-lg border bg-white px-4 md:px-6 py-6">
+    <section className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Brands Management
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">Manage and view your product brands</p>
+        </div>
+      </div>
+      <div className="rounded-lg border bg-white px-4 md:px-6 py-6 shadow-sm">
         <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-end gap-3">
           <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0 mb-1"></span>
           <Input

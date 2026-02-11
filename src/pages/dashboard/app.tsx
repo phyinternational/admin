@@ -32,7 +32,12 @@ const DashboardHome = () => {
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold text-secondary">Dashboard Home</h1>
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Dashboard Overview
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">Monitor your store's performance and analytics</p>
+        </div>
         <DateRangePicker onRangeChange={setDateRange} />
       </div>
 

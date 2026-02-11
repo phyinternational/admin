@@ -93,9 +93,14 @@ const BannersList = () => {
   };
 
   return (
-    <section className="">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-        <h2 className="text-2xl md:text-3xl tracking-wide">Banners List</h2>
+    <section className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            Banners Management
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">Manage promotional banners and their display order</p>
+        </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
           {!isReordering ? (
             <>
@@ -140,7 +145,7 @@ const BannersList = () => {
         </div>
       </div>
 
-      <div className="mt-4 rounded-lg border bg-white px-4 md:px-6 py-6">
+      <div className="rounded-lg border bg-white px-4 md:px-6 py-6 shadow-sm">
         {!isReordering && (
           <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-end gap-3">
             <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0 mb-1"></span>
