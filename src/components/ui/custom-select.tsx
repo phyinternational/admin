@@ -40,16 +40,19 @@ const CustomSelect = ({
 }: Props) => {
   function onSelectOptionChange(e: string) {
     if (onValueChange) {
-      onValueChange(e);
+      onValueChange(e === "none" ? "" : e);
     }
   }
   if (!options) options = [];
+
+  const displayValue = value === "" ? "none" : value;
+
   return (
     <Select
       defaultValue={defaultValue}
       onValueChange={(e) => onSelectOptionChange(e)}
       name={name}
-      value={value}
+      value={displayValue}
       disabled={disabled}
     >
       <SelectTrigger
@@ -67,7 +70,7 @@ const CustomSelect = ({
         <SelectGroup>
           <ScrollArea className="h-[50vh]">
             {defaultOption && (
-              <SelectItem value="">--- Select Option ---</SelectItem>
+              <SelectItem value="none">--- Select Option ---</SelectItem>
             )}
             {options.map((option, index) => (
               <SelectItem key={index} value={option?.value}>
