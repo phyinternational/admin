@@ -81,7 +81,7 @@ const ProductList = () => {
     <section className="">
       <h2 className="mb-2 text-2xl md:text-3xl tracking-wide">Products List</h2>
       <div className="mt-4 rounded-lg border bg-white px-4 md:px-6 py-6">
-        <header className="mb-5 ml-2 flex sm:flex-col items-start sm:items-center gap-3">
+        <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0"></span>
           <Input
             ref={searchInput}
@@ -101,8 +101,8 @@ const ProductList = () => {
             value={filter.status}
             onChange={(status) => setFilter((prev) => ({ ...prev, status, pageIndex: 0 }))}
             options={[
-              { value: "active", label: "Active" },
-              { value: "inactive", label: "Inactive" },
+              { value: "published", label: "Published" },
+              { value: "draft", label: "Draft" },
             ]}
           />
         </header>
