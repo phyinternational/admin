@@ -90,7 +90,6 @@ const ProductList = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-96 placeholder:text-base"
           />
-          <div className="flex flex-row gap-3"></div>
           <FilterSelect
             label="Category"
             value={filter.category}
