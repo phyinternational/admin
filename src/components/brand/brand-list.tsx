@@ -53,8 +53,8 @@ const BrandsList = () => {
       <h2 className="mb-2 text-2xl md:text-3xl tracking-wide">Brands List</h2>{" "}
       {/* Update heading */}
       <div className="mt-4 rounded-lg border bg-white px-4 md:px-6 py-6">
-        <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-          <span className="flex-shrink-0 h-8 w-5 rounded-md bg-violet-300"></span>
+        <header className="mb-5 ml-2 flex flex-col sm:flex-row items-start sm:items-end gap-3">
+          <span className="h-8 w-5 rounded-md bg-violet-300 flex-shrink-0 mb-1"></span>
           <Input
             value={filter.search}
             placeholder="Search Brands here"
